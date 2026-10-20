@@ -5,7 +5,7 @@ from django.db import models
 
 class Product(models.Model):
     name_product = models.CharField(max_length=100, verbose_name="Название продукта")
-    discription_product = models.CharField(max_length=100, verbose_name="Описание продукта", blank=True, null=True)
+    description_product = models.CharField(max_length=100, verbose_name="Описание продукта", blank=True, null=True)
     image_product = models.ImageField(upload_to='img_products/', blank=True, null=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     price_product = models.DecimalField(max_digits=10, decimal_places=2)
@@ -17,7 +17,7 @@ class Product(models.Model):
 
 class Category(models.Model):
     name_category = models.CharField(max_length=100)
-    discription_category = models.CharField(max_length=100, blank=True, null=True)
+    description_category = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.name_category
