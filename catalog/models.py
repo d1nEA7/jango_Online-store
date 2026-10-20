@@ -3,12 +3,16 @@ from django.db import models
 # Create your models here.
 from django.db import models
 
-# class Product(models.Model):
-#     name_product = models.CharField(max_length=100, verbose_name="Название продукта")
-#     discription_product = models.CharField(max_length=100, verbose_name="Описание продукта", blank=True, null=True)
-#     image_product = models.ImageField(upload_to='img_products/', blank=True, null=True)
-#     category = models.CharField(max_length=100)
-#     #price_product =
+class Product(models.Model):
+    name_product = models.CharField(max_length=100, verbose_name="Название продукта")
+    discription_product = models.CharField(max_length=100, verbose_name="Описание продукта", blank=True, null=True)
+    image_product = models.ImageField(upload_to='img_products/', blank=True, null=True)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    price_product = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.name_product
 
 
 class Category(models.Model):
