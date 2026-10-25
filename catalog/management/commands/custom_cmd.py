@@ -6,30 +6,34 @@ from catalog.models import Category, Product
 
 
 class Command(BaseCommand):
-    help = 'Удаляет все продукты и категории и загружает тестовые из фикстуры'
+    help = "Удаляет все продукты и категории и загружает тестовые из фикстуры"
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--fixture',
-            default='initial_data.json',
-            help='Имя файла фикстуры в папке fixtures приложения catalog',
+            "--fixture",
+            default="initial_data.json",
+            help="Имя файла фикстуры в папке fixtures приложения catalog",
         )
 
     def handle(self, *args, **options):
-        fixture_name = options['fixture']
+        fixture_name = options["fixture"]
 
         with transaction.atomic():
             # Продукты первыми — у них FK на категорию
             products_deleted, _ = Product.objects.all().delete()
             categories_deleted, _ = Category.objects.all().delete()
 
-            self.stdout.write(self.style.WARNING(
-                f'Удалено: продуктов={products_deleted}, категорий={categories_deleted}'
-            ))
+            self.stdout.write(
+                self.style.WARNING(
+                    f"Удалено: продуктов={products_deleted}, категорий={categories_deleted}"
+                )
+            )
 
-            call_command('loaddata', fixture_name, verbosity=0)
+            call_command("loaddata", fixture_name, verbosity=0)
 
-        self.stdout.write(self.style.SUCCESS(
-            f'Загружено: категорий={Category.objects.count()}, '
-            f'продуктов={Product.objects.count()}'
-        ))
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Загружено: категорий={Category.objects.count()}, "
+                f"продуктов={Product.objects.count()}"
+            )
+        )
