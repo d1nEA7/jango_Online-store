@@ -1,0 +1,27 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Удаление блога{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card border-danger">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">Удаление блога</h3>
+        </div>
+        <div class="card-body">
+            <p class="fs-5">Вы действительно хотите удалить блог:</p>
+            <h4 class="text-danger mb-4">"{{ blog.headline }}"</h4>
+            
+            <p>Это действие нельзя будет отменить.</p>
+
+            <!-- Форма для отправки POST-запроса на удаление -->
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Да, удалить</button>
+                <!-- Ссылка возвращает обратно к списку блогов -->
+                <a href="{% url 'blogs:blog_list' %}" class="btn btn-secondary">Отмена</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

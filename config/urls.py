@@ -23,5 +23,6 @@ from config import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("catalog/", include("catalog.urls", namespace="catalog")),
+    path("blogs/", include("blogs.urls", namespace="blogs")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
