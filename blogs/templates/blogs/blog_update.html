@@ -1,0 +1,28 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Редактирование блога{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Редактировать блог</h1>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Выводим общие ошибки формы, если они есть -->
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                Пожалуйста, исправьте ошибки ниже.
+            </div>
+        {% endif %}
+
+        <!-- Выводим поля формы -->
+        {{ form.as_p }}
+        
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        
+        <!-- Кнопка отмены возвращает на список блогов -->
+        <a href="{% url 'blogs:blog_list' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}

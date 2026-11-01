@@ -1,0 +1,79 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ product.name_product }} - Подробнее{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Кнопка "Назад" -->
+    <div class="mb-4">
+        <a href="javascript:history.back()" class="btn btn-outline-secondary btn-sm">
+            &larr; Назад в каталог
+        </a>
+    </div>
+
+    <!-- Карточка товара -->
+    <div class="card shadow-sm border-0">
+        <div class="row g-0">
+
+            <!-- Блок с картинкой (левая часть) -->
+            <div class="col-md-5 p-4 d-flex align-items-center justify-content-center bg-light">
+                {% if product.image_product %}
+                    <!-- Если картинка — это URL (ссылка), используем её напрямую -->
+                    <img src="{{ product.image_product }}"
+                         alt="{{ product.name_product }}"
+                         class="img-fluid rounded"
+                         style="max-height: 400px; object-fit: contain;">
+                {% else %}
+                    <!-- Заглушка, если картинки нет -->
+                    <div class="text-muted text-center">
+                        <span style="font-size: 4rem;">🖼️</span>
+                        <p class="mt-2 mb-0">Нет изображения</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Блок с информацией (правая часть) -->
+            <div class="col-md-7">
+                <div class="card-body p-4 d-flex flex-column h-100">
+
+                    <!-- Название -->
+                    <h2 class="card-title fw-bold mb-3">{{ product.name_product }}</h2>
+
+                    <!-- Цена -->
+                    <h3 class="text-success mb-4">Цена: {{ product.price_product }} ₽</h3>
+
+                    <hr>
+
+                    <!-- Описание -->
+                    <h5 class="text-muted mb-2">Описание</h5>
+                    <p class="card-text" style="white-space: pre-line; line-height: 1.6;">
+                        {{ product.description_product }}
+                    </p>
+
+                    <!-- Кнопки действий внизу -->
+                    <div class="mt-auto pt-4 d-flex gap-2">
+                        <button class="btn btn-primary btn-lg px-4">Добавить в корзину</button>
+                        <button class="btn btn-outline-secondary btn-lg">Купить сейчас</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Небольшой CSS для красоты картинки -->
+<style>
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .img-fluid {
+        transition: transform 0.3s ease;
+    }
+    .img-fluid:hover {
+        transform: scale(1.03);
+    }
+</style>
+{% endblock %}
