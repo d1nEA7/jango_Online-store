@@ -1,29 +1,32 @@
 {% extends 'catalog/base.html' %}
-{% load my_tags %}
-{% block title %}Главная страница{% endblock title %}
+
+{% block title %}Список продуктов{% endblock title %}
+
 {% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Список товаров</h1>
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    {% for product in products %}
-        <div class="col">
-          <div class="card shadow-sm">
-            <img src="{{product.image_product | media_filter}}" >
+    <!-- Кнопка создания (обратите внимание на 'blogs:', а не 'Blog:') -->
+    <a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">Создать новый товар</a>
 
-            <div class="card-body">
-                <h3 class="card-title">{{ product.name_product }}</h3>
-              <p class="card-text">{{ product.description_product | truncatechars:100 }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="  {% url 'catalog:product_detail' pk=product.pk %}" >Посмотреть</a>
-
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать</button>
+    <ul class="list-group">
+        {% for product in products %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <!-- Ссылка на детальную страницу (blog.pk и blog.headline) -->
+                    <a href="{% url 'catalog:product_detail' product.pk %}" class="fs-5 text-decoration-none">
+                        {{ product.name_product }}
+                    </a>
                 </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
-
-    {% endfor %}
+                <div>
+                    <!-- Кнопки редактирования и удаления -->
+                    <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-sm btn-secondary">Редактировать</a>
+                    <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                </div>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-center">Продуктов пока нет. Создайте первый!</li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}
