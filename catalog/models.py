@@ -10,8 +10,12 @@ class Product(models.Model):
         max_length=100, verbose_name="Описание продукта", blank=True, null=True
     )
     image_product = models.ImageField(upload_to="img_products/", blank=True, null=True)
-    category = models.ForeignKey("Category", on_delete=models.CASCADE, verbose_name="Категория")
-    price_product = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена продукта")
+    category = models.ForeignKey(
+        "Category", on_delete=models.CASCADE, verbose_name="Категория"
+    )
+    price_product = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name="Цена продукта"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

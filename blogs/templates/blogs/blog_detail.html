@@ -1,0 +1,47 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ blog.headline }}{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <!-- Если есть картинка, выводим ее -->
+        {% if blog.image_preview %}
+            <img src="{{ blog.image_preview.url }}" class="card-img-top" alt="{{ blog.headline }}" style="max-height: 400px; object-fit: cover;">
+        {% endif %}
+
+        <div class="card-body">
+            <h1 class="card-title">{{ blog.headline }}</h1>
+
+            <!-- Метаданные: дата, статус публикации, просмотры -->
+            <p class="text-muted">
+                Опубликовано: {{ blog.created_at|date:"d E Y в H:i" }} <br>
+                Статус:
+                {% if blog.publication_indicator %}
+                    <span class="badge bg-success">Опубликовано</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">Черновик</span>
+                {% endif %}
+                <br>
+                Просмотров: {{ blog.number_of_views }}
+            </p>
+
+            <hr>
+
+            <!-- Текст статьи. linebreaks фильтр переносит строки -->
+            <p class="card-text fs-5">{{ blog.content|linebreaks }}</p>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between align-items-center">
+            <!-- Кнопка назад -->
+            <a href="{% url 'blogs:blog_list' %}" class="btn btn-secondary">← Назад к списку</a>
+
+            <div>
+                <!-- Кнопки редактирования и удаления -->
+                <a href="{% url 'blogs:blog_update' blog.pk %}" class="btn btn-primary">Редактировать</a>
+                <a href="{% url 'blogs:blog_delete' blog.pk %}" class="btn btn-danger">Удалить</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
