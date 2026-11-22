@@ -1,0 +1,30 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ blog.headline }}{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <!-- Если есть картинка, выводим ее -->
+
+        <div class="card-body">
+            <h1 class="card-title">Название категории: {{ category.name_category }}</h1>
+
+
+            <!-- Текст статьи. linebreaks фильтр переносит строки -->
+            <p class="card-text fs-5">Описание категории: {{ category.description_category }}</p>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between align-items-center">
+            <!-- Кнопка назад -->
+            <a href="{% url 'catalog:category_list' %}" class="btn btn-secondary">← Назад к списку</a>
+
+            <div>
+                <!-- Кнопки редактирования и удаления -->
+                <a href="{% url 'catalog:category_update' category.pk %}" class="btn btn-primary">Редактировать</a>
+                <a href="{% url 'catalog:category_delete' category.pk %}" class="btn btn-danger">Удалить</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

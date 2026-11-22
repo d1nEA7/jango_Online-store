@@ -1,0 +1,32 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Список блогов{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Список категорий</h1>
+
+    <!-- Кнопка создания (обратите внимание на 'blogs:', а не 'Blog:') -->
+    <a href="{% url 'catalog:create_category' %}" class="btn btn-primary mb-3">Создать новую категорию</a>
+
+    <ul class="list-group">
+        {% for category in categories %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <!-- Ссылка на детальную страницу (blog.pk и blog.headline) -->
+                    <a href="{% url 'catalog:category_detail' category.pk %}" class="fs-5 text-decoration-none">
+                        {{ category.name_category }}
+                    </a>
+                </div>
+                <div>
+                    <!-- Кнопки редактирования и удаления -->
+                    <a href="{% url 'catalog:category_update' category.pk %}" class="btn btn-sm btn-secondary">Редактировать</a>
+                    <a href="{% url 'catalog:category_delete' category.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                </div>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-center">Категорий пока нет. Создайте первую!</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
