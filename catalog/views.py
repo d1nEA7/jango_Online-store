@@ -1,14 +1,21 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import (
+    DetailView,
+    ListView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 from catalog.forms import CategoryForm, ProductForm
 from catalog.models import Product, Category
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView
 
-#========================category====================================================================
+# ========================category====================================================================
+
 
 class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
@@ -17,10 +24,12 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
     form_class = CategoryForm
     success_url = reverse_lazy("catalog:category_list")
 
+
 class CategoryDetailView(DetailView):
     model = Category
     template_name = "catalog/category_detail.html"
     context_object_name = "category"
+
 
 class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Category
@@ -29,16 +38,21 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     form_class = CategoryForm
     success_url = reverse_lazy("catalog:category_list")
 
+
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = Category
     template_name = "catalog/category_delete.html"
     success_url = reverse_lazy("catalog:category_list")
 
+
 class CategoryListView(ListView):
     model = Category
     template_name = "catalog/category_list.html"
     context_object_name = "categories"
-#=========================================product=======================================================
+
+
+# =========================================product=======================================================
+
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
@@ -47,10 +61,12 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     form_class = ProductForm
     success_url = reverse_lazy("catalog:product_list")
 
+
 class ProductDetailView(DetailView):
     model = Product
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
+
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
@@ -59,19 +75,21 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ProductForm
     success_url = reverse_lazy("catalog:product_list")
 
+
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = "catalog/product_delete.html"
     success_url = reverse_lazy("catalog:product_list")
+
 
 class ProductListView(ListView):
     model = Product
     template_name = "catalog/product_list.html"
     context_object_name = "products"
 
+
 # Create your views here.
 
 
 def contacts(request):
     return render(request, "contacts.html")
-

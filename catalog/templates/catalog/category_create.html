@@ -3,6 +3,7 @@
 {% block title %}Создание блога{% endblock title %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <div class="container mt-5">
     <h1 class="mb-4">Создать новую категорию</h1>
 
@@ -25,4 +26,5 @@
         <a href="{% url 'blogs:blog_list' %}" class="btn btn-secondary">Отмена</a>
     </form>
 </div>
+{% endif %}
 {% endblock %}

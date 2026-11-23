@@ -8,8 +8,11 @@ class StyleFormMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs.update({"class": "form-control",})
-
+            field.widget.attrs.update(
+                {
+                    "class": "form-control",
+                }
+            )
 
 
 class CategoryForm(forms.ModelForm):
@@ -18,11 +21,17 @@ class CategoryForm(forms.ModelForm):
         fields = ["name_category", "description_category"]
         description_category = forms.CharField(widget=forms.Textarea)
 
+
 class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name_product', 'description_product', 'category', 'image_product', 'price_product']
-
+        fields = [
+            "name_product",
+            "description_product",
+            "category",
+            "image_product",
+            "price_product",
+        ]
 
     def clean(self):
         cleaned_data = super().clean()
@@ -52,5 +61,3 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         if price <= 0:
             raise ValidationError("Цена не может быть отрицательной или равной 0")
         return price
-
-

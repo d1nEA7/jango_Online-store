@@ -3,6 +3,9 @@
 {% block title %}Удаление категории{% endblock title %}
 
 {% block content %}
+
+{% if user.is_authenticated %}
+
 <div class="container mt-5">
     <div class="card border-danger">
         <div class="card-header bg-danger text-white">
@@ -24,4 +27,7 @@
         </div>
     </div>
 </div>
+
+{% endif %}
+
 {% endblock %}

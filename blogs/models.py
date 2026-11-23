@@ -25,4 +25,3 @@ class Blog(models.Model):
     class Meta:
         verbose_name = "Заголовок"
         verbose_name_plural = "Заголовки"
-
