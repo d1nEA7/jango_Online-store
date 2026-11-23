@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import os
 from pathlib import Path
 
+from django.conf.global_settings import LOGIN_URL
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -27,6 +28,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY", "0")
 
+EMAIL_BACKEND=os.getenv("EMAIL_BACKEND")
+EMAIL_HOST=os.getenv("EMAIL_HOST")
+EMAIL_PORT=os.getenv("EMAIL_PORT")
+EMAIL_USE_TLS=os.getenv("EMAIL_USE_TLS")
+
+EMAIL_HOST_USER=os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD=os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL=os.getenv("DEFAULT_FROM_EMAIL")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,6 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "catalog",
     "blogs",
+    "users"
 ]
 
 MIDDLEWARE = [
@@ -140,3 +150,10 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+
+AUTH_USER_MODEL = "users.User"
+
+
+LOGIN_URL = "users:login"
+LOGIN_REDIRECT_URL = "catalog:category_list"
+LOGOUT_REDIRECT_URL = "catalog:category_list"
