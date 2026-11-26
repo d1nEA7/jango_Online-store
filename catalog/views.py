@@ -1,6 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
+from itertools import product
+from urllib import request
+
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
+from django.views import View
 from django.views.generic import (
     DetailView,
     ListView,
@@ -50,7 +55,11 @@ class CategoryListView(ListView):
     template_name = "catalog/category_list.html"
     context_object_name = "categories"
 
-
+class OwnerOrModeratorMixin(UserPassesTestMixin):
+    def test_func(self):
+        product = self.get_object()
+        return product.owner == self.request.user or self.request.user.has_perm("catalog.delete_product"
+        )
 # =========================================product=======================================================
 
 
@@ -60,6 +69,9 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     context_object_name = "product"
     form_class = ProductForm
     success_url = reverse_lazy("catalog:product_list")
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
 
 class ProductDetailView(DetailView):
@@ -68,7 +80,7 @@ class ProductDetailView(DetailView):
     context_object_name = "product"
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, OwnerOrModeratorMixin, UpdateView):
     model = Product
     template_name = "catalog/category_update.html"
     context_object_name = "Product"
@@ -76,20 +88,34 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("catalog:product_list")
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+
+class ProductDeleteView(LoginRequiredMixin,OwnerOrModeratorMixin, DeleteView):
     model = Product
     template_name = "catalog/product_delete.html"
     success_url = reverse_lazy("catalog:product_list")
+
+
+
 
 
 class ProductListView(ListView):
     model = Product
     template_name = "catalog/product_list.html"
     context_object_name = "products"
-
+#===================================================================================================================
 
 # Create your views here.
 
 
-def contacts(request):
-    return render(request, "contacts.html")
+
+
+class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = "catalog.can_unpublish_product"
+
+    def post(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        product.is_published = Product.Status.UNPUBLISHED
+        product.save()
+        return HttpResponseRedirect(
+        reverse("catalog:product_detail", kwargs={"pk": product.pk})
+        )

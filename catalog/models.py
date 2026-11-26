@@ -3,6 +3,8 @@ from django.db import models
 # Create your models here.
 from django.db import models
 
+from config import settings
+
 
 class Product(models.Model):
     name_product = models.CharField(max_length=100, verbose_name="Название продукта")
@@ -19,12 +21,21 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    Publication_status = models.BooleanField(default=False)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Владелец", related_name="products")
+
+
     def __str__(self):
         return self.name_product
+
 
     class Meta:
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
+        permissions = [
+            ("can_unpublish_product", "Can unpublish product") #может отменять публикацию продукта
+        ]
+
 
 
 class Category(models.Model):
