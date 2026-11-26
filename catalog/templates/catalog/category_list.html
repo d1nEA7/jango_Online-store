@@ -22,8 +22,13 @@
                 <div>
                     <!-- Кнопки редактирования и удаления -->
                     {% if user.is_authenticated %}
+                        {% if product.owner == request.user %}
                         <a href="{% url 'catalog:category_update' category.pk %}" class="btn btn-sm btn-secondary">Редактировать</a>
+                        {% endif %}
+                        {% if product.owner == request.user or perms.catalog.delete_product %}
                         <a href="{% url 'catalog:category_delete' category.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                        {% endif %}
+
                     {% endif %}
                 </div>
             </li>
